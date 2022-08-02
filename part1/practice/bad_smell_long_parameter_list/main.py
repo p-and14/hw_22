@@ -8,43 +8,33 @@
 # - скорость
 # В этом примере есть сразу несколько запахов плохого кода. Исправьте их
 #   (длинный метод, длинный список параметров)
+class Field:
+    def set_unit(self, x, y, unit):
+        pass
 
 
 class Unit:
-    def move(self, field, x_coord, y_coord, direction, is_fly, crawl, speed = 1):
+    def __init__(self, field, status, speed=1):
+        self.status = status
+        self.speed = speed
+        self.field = field
 
-        if is_fly and crawl:
-            raise ValueError('Рожденный ползать летать не должен!')
+    def move(self, x, y, direction):
+        speed = self._get_speed()
 
-        if is_fly:
-            speed *= 1.2
-            if direction == 'UP':
-                new_y = y_coord + speed
-                new_x = x_coord
-            elif direction == 'DOWN':
-                new_y = y_coord - speed
-                new_x = x_coord
-            elif direction == 'LEFT':
-                new_y = y_coord
-                new_x = x_coord - speed
-            elif direction == 'RIGTH':
-                new_y = y_coord
-                new_x = x_coord + speed
-        if crawl:
-            speed *= 0.5
-            if direction == 'UP':
-                new_y = y_coord + speed
-                new_x = x_coord
-            elif direction == 'DOWN':
-                new_y = y_coord - speed
-                new_x = x_coord
-            elif direction == 'LEFT':
-                new_y = y_coord
-                new_x = x_coord - speed
-            elif direction == 'RIGTH':
-                new_y = y_coord
-                new_x = x_coord + speed
+        if direction == 'UP':
+            self.field.set_unit(x=x, y=y + speed, unit=self)
+        elif direction == 'DOWN':
+            self.field.set_unit(x=x, y=y - speed, unit=self)
+        elif direction == 'LEFT':
+            self.field.set_unit(x=x - speed, y=y, unit=self)
+        elif direction == 'RIGHT':
+            self.field.set_unit(x=x + speed, y=y, unit=self)
 
-            field.set_unit(x=new_x, y=new_y, unit=self)
-
-#     ...
+    def _get_speed(self):
+        if self.status == "fly":
+            return self.speed * 1.2
+        elif self.status == "crawl":
+            return self.speed * 0.5
+        else:
+            raise ValueError('Неправильные данные')

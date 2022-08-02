@@ -13,7 +13,7 @@ class Unit:
             self.field.set_unit(y=self.y - speed, x=self.x, unit=self)
         elif direction == 'LEFT':
             self.field.set_unit(y=self.y, x=self.x - speed, unit=self)
-        elif direction == 'RIGTH':
+        elif direction == 'RIGHT':
             self.field.set_unit(y=self.y, x=self.x + speed, unit=self)
 
     def _get_speed(self):
